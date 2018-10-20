@@ -1,0 +1,96 @@
+<html layout:decorate="~{/layouts/main}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<div layout:fragment="content">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/pedidos/lista" th:text="#{order}"></a>
+                </li>
+                <li th:if="${action == 'edit'}" class="breadcrumb-item active" th:text="#{order.edit}"></li>
+                <li th:if="${action == 'new'}" class="breadcrumb-item active" th:text="#{order.new}"></li>
+            </ol>
+            <div class="card card-register mx-auto mt-5">
+                <div class="card-header ">
+                    <i class="fa fa-check-square-o"></i>
+                    <span th:text="#{order.form}"></span>
+                </div>
+                <div class="card-body">
+                    <form th:object="${order}" th:action="@{/pedidos/salvar}" method="post">
+                        <input type="hidden" id="id" th:field="*{id}">
+                        <div class="text-center">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="order-client" th:text="#{order.client}"></label>
+                                    <select class="form-control" id="order-client" th:field="*{cliente}">
+                                        <option selected="" value="">--</option>
+                                        <option th:each="client : ${clients}" th:value="${client.id}"
+                                                th:text="${client.nome}"
+                                                th:selected="${client} == ${order.cliente} ? true : false">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" th:if="${action == 'new'}">
+                                <div class="col-md-12">
+                                    <label for="order-address" th:text="#{order.address}"></label>
+                                    <select class="form-control" name="order-address" id="order-address"
+                                            th:field="*{enderecoEntrega}">
+                                        <option selected="" value="">--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" th:if="${action == 'edit'}">
+                                <div class="col-md-12">
+                                    <label for="order-address" th:text="#{order.address}"></label>
+                                    <select class="form-control" name="order-address" id="order-address"
+                                            th:field="*{enderecoEntrega}">
+                                        <option th:each="address : *{cliente.enderecos}" th:value="${address.id}"
+                                                th:text="${address.logradouro + ', ' + address.numero + ' ' +
+                                                address.complemento + ' - ' + address.bairro + ' - CEP ' +
+                                                address.cep + ' em ' + address.cidade.nome}"
+                                                th:selected="${address} == ${order.enderecoEntrega} ? true : false">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" th:if="${action == 'edit'}">
+                                <div class="col-md-12">
+                                    <a class="d-block mt-3" th:text="#{order.add}" th:href="@{|/pedidos/itens/${order.id}|}"></a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success" type="submit" th:text="#{save}"></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="js-view">
+    <script th:inline="javascript">
+        $('#order-client').change(
+            function () {
+                $.getJSON("http://localhost:8080/pedidos/enderecos", {
+                    clientId: $(this).val(),
+                    ajax: 'true'
+                }, function (data) {
+                    var html = '<option value="" disabled="">--</option>';
+                    var len = data.length;
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' + data[i].id + '">'
+                            + data[i].logradouro + ", " + data[i].numero + " " + data[i].complemento + " - "
+                            + data[i].bairro + " - CEP " + data[i].cep + " em " + data[i].cidade.nome + '</option>';
+                    }
+                    html += '</option>';
+                    $('#order-address').html(html);
+                });
+            });
+    </script>
+</th:block>
+</html>

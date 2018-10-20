@@ -1,0 +1,89 @@
+<div th:fragment="items" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top nav nav-pills" id="mainNav">
+        <a class="navbar-brand" href="/">SV Tech</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" data-placement="right" title="Tables">
+                    <a class="nav-link" href="/categorias/lista">
+                        <i class="fa fa-fw fa-tags"></i>
+                        <span th:text=#{categories} class="nav-link-text">Categorias</span>
+                    </a>
+                </li>
+<!--            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                    <a class="nav-link" href="/clientes/lista">
+                        <i class="fa fa-fw fa-address-card-o"></i>
+                        <span th:text=#{client.list} class="nav-link-text">Clientes</span>
+                    </a>
+                </li>
+               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="locations">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-map-signs"></i>
+                        <span th:text=#{locals} class="nav-link-text"></span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseMulti">
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="locations">
+                            <a class="nav-link" href="/cidades/lista">
+                                <i class="fa fa-fw fa-map-marker"></i>
+                                <span th:text=#{cities} class="nav-link-text">Cidades</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="locations">
+                            <a class="nav-link" href="/estados/lista">
+                                <i class="fa fa-fw fa-map-o"></i>
+                                <span th:text=#{states} class="nav-link-text">Estados</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>-->
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <a class="nav-link" href="/pedidos/lista">
+                        <i class="fa fa-fw fa-shopping-cart"></i>
+                        <span th:text=#{orders} class="nav-link-text">Pedidos</span>
+                    </a>
+                </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <a class="nav-link" href="/produtos/lista">
+                        <i class="fa fa-fw fa-server"></i>
+                        <span th:text=#{products} class="nav-link-text">Produtos</span>
+                    </a>
+                </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" data-toggle="tooltip" data-placement="right" title="reports">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#reports" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa fa-line-chart"></i>
+                        <span th:text=#{reports} class="nav-link-text"></span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="reports">
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="reports">
+                            <a class="nav-link" href="/relatorios/lista">
+                                <i class="fal fa-file-alt"></i>
+                                <span th:text=#{reports.list} class="nav-link-text">Relatorios Gerais</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="reports">
+                            <a class="nav-link" href="/relatorios/filtros">
+                                <i class="far fa-fw fa-calendar-alt"></i>
+                                <span th:text=#{reports.filter} class="nav-link-text">Relatorios por periodo</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav sidenav-toggler">
+                <li class="nav-item">
+                    <a class="nav-link text-center" id="sidenavToggler">
+                        <i class="fa fa-fw fa-angle-left"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a href="#" th:href="@{/logout}" th:text="#{login.logout}" class="nav-link js-scroll-trigger"></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
