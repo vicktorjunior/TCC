@@ -1,4 +1,4 @@
-<html layout:decorate="~{/layouts/main}" xmlns:layout="http://www.w3.org/1999/xhtml"
+<html layout:decorate="~{layouts/main}" xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 
 <div layout:fragment="content">
@@ -41,4 +41,22 @@
         </div>
     </div>
 </div>
+<th:block layout:fragment="js-view">
+    <script>
+        function errorAlert() {
+            swal({
+                title: "Erro!",
+                text: "Não foi possível incluir esta categoria. Existe uma categoria registrada com este mesmo nome.",
+                type: "error",
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ok",
+                allowOutsideClick: false
+            });
+        }
+
+        if ([[${error}]] == true)
+            errorAlert();
+    </script>
+</th:block>
 </html>

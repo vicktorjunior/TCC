@@ -1,4 +1,4 @@
-<html layout:decorate="~{/layouts/main}" xmlns:layout="http://www.w3.org/1999/xhtml"
+<html layout:decorate="~{layouts/main}" xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
     <div class="content-wrapper">
@@ -107,8 +107,7 @@
                                         #{cancel.msg} +'\', \'/pedidos/cancelar/' + ${order.id} +'\');'"></button>
                             </div>
                             <div class="form-group text-center">
-                                <a th:href="@{|/pedidos/valida/${order.id}|}" class="btn btn-success" th:text="#{save}"></a>
-                            </div>
+                                <a th:href="@{|/pedidos/valida/${order.id}|}" class="btn btn-success" th:text="#{save}"></a>                            </div>
                         </div>
                     </form>
                 </div>
@@ -130,7 +129,6 @@
                 allowOutsideClick: false
             }).then(result => {
                 if (result.value) {
-                    document.getElementById("qtdSelling").required = false;
                     window.location.href = redirectPage;
                 }
             });

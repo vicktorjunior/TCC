@@ -44,7 +44,7 @@ public class PedidoController {
         model.addAttribute("saved", saved);
         saved = false;
         model.addAttribute("orders", service.findAll());
-        return new ModelAndView("/order/list");
+        return new ModelAndView("order/list");
     }
 
     @PostMapping("/salvar")
@@ -87,7 +87,7 @@ public class PedidoController {
         model.addAttribute("items", new HashSet<>());
         model.addAttribute("products", productService.findAll());
         model.addAttribute("newItem", itemPedido);
-        return new ModelAndView("/order/items/form");
+        return new ModelAndView("order/items/form");
     }
 
     @GetMapping("/itens/{id}")
@@ -96,10 +96,12 @@ public class PedidoController {
         itemPedido.setPedido(service.find(id));
         model.addAttribute("order", service.find(id));
         model.addAttribute("action", "new");
+        model.addAttribute("error", error);
+        error = false;
         model.addAttribute("items", service.find(id).getItens());
         model.addAttribute("products", productService.findAll());
         model.addAttribute("newItem", itemPedido);
-        return new ModelAndView("/order/items/form");
+        return new ModelAndView("order/items/form");
     }
 
     @GetMapping("/itens/{id}/editar/{idItem}")
@@ -109,7 +111,7 @@ public class PedidoController {
         model.addAttribute("items", service.find(id).getItens());
         model.addAttribute("products", productService.findAll());
         model.addAttribute("newItem", service.findItemById(service.find(id), productService.find(idItem)));
-        return new ModelAndView("/order/items/form");
+        return new ModelAndView("order/items/form");
     }
 
     @GetMapping("/itens/{id}/excluir/{idItem}")

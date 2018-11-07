@@ -1,7 +1,7 @@
 package com.victorseger.svtech.controller;
 
 import com.victorseger.svtech.domain.Filter;
-import com.victorseger.svtech.services.PedidoService;
+import com.victorseger.svtech.services.RelatorioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
@@ -17,16 +17,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class RelatorioController {
 
     @Autowired
-    private PedidoService pedidoService;
+    private RelatorioService relatorioService;
 
     private Filter filter = new Filter();
 
     @GetMapping("/lista")
     public ModelAndView listReports(Model model) {
-        model.addAttribute("products", pedidoService.topSellingProducts());
-        model.addAttribute("orders", pedidoService.topOrders());
-        model.addAttribute("categories", pedidoService.transformMatrix(pedidoService.topSellingCategories()));
-        return new ModelAndView("/report/list");
+        model.addAttribute("products", relatorioService.transformProductMatrix(relatorioService.topSellingProducts()));
+        model.addAttribute("orders", relatorioService.topOrders());
+        model.addAttribute("categories", relatorioService.transformCategoryMatrix(relatorioService.topSellingCategories()));
+        return new ModelAndView("report/list");
     }
 
     @GetMapping("/filtros")
@@ -34,7 +34,7 @@ public class RelatorioController {
         String[] objects = {"Produto", "Pedido", "Categoria"};
         model.addAttribute("objects", objects);
         model.addAttribute("filter", filter);
-        return new ModelAndView("/report/filter");
+        return new ModelAndView("report/filter");
     }
 
     @PostMapping("/filtrar")
@@ -45,12 +45,12 @@ public class RelatorioController {
         model.addAttribute("objects", objects);
         model.addAttribute("filter", filter);
         if ("Pedido".equals(filter.getObject())){
-            model.addAttribute("orders", pedidoService.filterOrders(filter.getInitialDate(), filter.getFinalDate()));
+            model.addAttribute("orders", relatorioService.filterOrders(filter.getInitialDate(), filter.getFinalDate()));
         } else if ("Categoria".equals(filter.getObject())){
-            model.addAttribute("categories", pedidoService.transformMatrix(pedidoService.filterCategories(filter.getInitialDate(), filter.getFinalDate())));
+            model.addAttribute("categories", relatorioService.transformCategoryMatrix(relatorioService.filterCategories(filter.getInitialDate(), filter.getFinalDate())));
         } else if ("Produto".equals(filter.getObject())){
-            model.addAttribute("products", pedidoService.filterProducts(filter.getInitialDate(), filter.getFinalDate()));
+            model.addAttribute("products", relatorioService.transformProductMatrix(relatorioService.filterProducts(filter.getInitialDate(), filter.getFinalDate())));
         }
-        return new ModelAndView("/report/filter");
+        return new ModelAndView("report/filter");
     }
 }

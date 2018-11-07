@@ -24,20 +24,29 @@ public class CategoriaController {
         model.addAttribute("categories", service.findAll());
         model.addAttribute("error", error);
         error = false;
-        return new ModelAndView("/product/category/list");
+        return new ModelAndView("product/category/list");
     }
 
     @GetMapping("/novo")
     public ModelAndView newCategory(Model model) {
         model.addAttribute("category", new Categoria());
         model.addAttribute("action", "new");
-        return new ModelAndView("/product/category/form");
+        model.addAttribute("error", error);
+        error = false;
+        return new ModelAndView("product/category/form");
     }
 
     @PostMapping("/salvar")
     public ModelAndView saveCategory(Categoria categoria) {
-        if (categoria.getId() != null) service.update(categoria);
-        else service.insert(categoria);
+        if (categoria.getId() != null){
+            service.update(categoria);
+        } else {
+            Categoria savedCategoria = service.insert(categoria);
+            if (savedCategoria == null){
+                error = true;
+                return new ModelAndView("redirect:/categorias/novo");
+            }
+        }
         return new ModelAndView("redirect:/categorias/lista");
     }
 
@@ -45,7 +54,7 @@ public class CategoriaController {
     public ModelAndView editCategory(Model model, @PathVariable int id) {
         model.addAttribute("category", service.find(id));
         model.addAttribute("action", "edit");
-        return new ModelAndView("/product/category/form");
+        return new ModelAndView("product/category/form");
     }
 
     @GetMapping("/excluir/{id}")

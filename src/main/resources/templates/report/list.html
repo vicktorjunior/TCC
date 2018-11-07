@@ -1,4 +1,4 @@
-<html layout:decorate="~{/layouts/main}" xmlns:layout="http://www.w3.org/1999/xhtml"
+<html layout:decorate="~{layouts/main}" xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 
 <div layout:fragment="content">
@@ -13,9 +13,9 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="text-center">
-                        <span th:if="${#lists.isEmpty(products)}" th:text="#{listisempty}" class="badge"> </span>
+                        <span th:if="${products.isEmpty()}" th:text="#{listisempty}" class="badge"> </span>
                     </div>
-                    <div class="table-responsive" th:if="!${#lists.isEmpty(products)}">
+                    <div class="table-responsive" th:if="!${products.isEmpty()}">
                         <div class="card-header">
                             <i class="fa fa-table"></i>
                             <span th:text="#{product.topSelling}"></span>
@@ -30,15 +30,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="product, row: ${products}">
+                            <tr th:each="product, row: ${products.keySet()}">
                                 <td th:text="${row.index + 1}"></td>
-                                <td th:text="${product.id.produto.nome}"></td>
+                                <td th:text="${product.nome}"></td>
                                 <td>
                                     <ul>
-                                        <li th:each="category: ${product.id.produto.categorias}" th:text="${category.nome}"></li>
+                                        <li th:each="category: ${product.categorias}" th:text="${category.nome}"></li>
                                     </ul>
                                 </td>
-                                <td th:text="${product.quantidade}"></td>
+                                <td th:text="${products.get(product)}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -84,9 +84,9 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="text-center">
-                        <span th:if="${#lists.isEmpty(categories)}" th:text="#{listisempty}" class="badge"> </span>
+                        <span th:if="${categories.isEmpty()}" th:text="#{listisempty}" class="badge"> </span>
                     </div>
-                    <div class="table-responsive" th:if="!${#lists.isEmpty(categories)}">
+                    <div class="table-responsive" th:if="!${categories.isEmpty()}">
                         <div class="card-header">
                             <i class="fa fa-table"></i>
                             <span th:text="#{category.topSelling}"></span>

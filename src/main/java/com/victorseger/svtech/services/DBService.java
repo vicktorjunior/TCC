@@ -135,7 +135,7 @@ public class DBService {
         Produto p50 = new Produto(null, "Produto 50", 10.00);
 
         cat1.getProdutos().addAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
-                p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
+                p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p33, p34, p35, p36, p37, p38,
                 p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
 
         p12.getCategorias().add(cat1);
@@ -202,7 +202,7 @@ public class DBService {
         produtoRepository.saveAll(Arrays.asList(p1,p2,p3, p4, p5, p6, p7, p8, p9, p10, p11));
 
         produtoRepository.saveAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
-                p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
+                p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p33, p34, p35, p36, p37, p38,
                 p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
 
         Estado est1 = new Estado(null, "Rio Grande do Sul");
@@ -219,7 +219,7 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 
 
-        Cliente cli1 = new Cliente(null, "Usuário comum", "vicktor.junior@gmail.com", "11111111111", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123"));
+        Cliente cli1 = new Cliente(null, "Usuário comum", "vicktor.junior@hotmail.com", "11111111111", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123"));
         cli1.getTelefones().addAll(Arrays.asList("111111111","111111111"));
 
         Cliente cli2 = new Cliente(null, "Ana Costa", "victor.seger@outlook.com", "28616481800", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123"));
@@ -238,9 +238,9 @@ public class DBService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
-        Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:37"), cli1, e2);
-
+        Pedido ped1 = new Pedido(null, sdf.parse("30/09/2018 10:32"), cli1, e1);
+        Pedido ped2 = new Pedido(null, sdf.parse("10/10/2018 19:37"), cli1, e1);
+        Pedido ped3 = new Pedido(null, (sdf.parse("21/10/2018 12:00")), cli1, e1);
         Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
         ped1.setPagamento(pgto1);
 
@@ -249,16 +249,18 @@ public class DBService {
 
         cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
 
-        pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+        pedidoRepository.saveAll(Arrays.asList(ped1,ped2, ped3));
         pagamentoRepository.saveAll(Arrays.asList(pgto1,pgto2));
 
         ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
         ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
         ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+        ItemPedido ip4 = new ItemPedido(ped3, p1, 0.00, 1, 2000.00);
 
 
         ped1.getItens().addAll(Arrays.asList(ip1,ip2));
         ped2.getItens().addAll(Arrays.asList(ip3));
+        ped3.getItens().addAll(Arrays.asList(ip4));
 
         double soma = 0;
         for (ItemPedido itemPedido : ped1.getItens()) {
@@ -270,12 +272,18 @@ public class DBService {
             soma += itemPedido.getPreco();
         }
         ped2.setValorTotal(soma);
-        pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+        soma = 0;
+        for (ItemPedido itemPedido : ped3.getItens()) {
+            soma += itemPedido.getPreco();
+        }
+        ped3.setValorTotal(soma);
+        pedidoRepository.saveAll(Arrays.asList(ped1,ped2,ped3));
         p1.getItens().addAll(Arrays.asList(ip1));
         p2.getItens().addAll(Arrays.asList(ip3));
         p3.getItens().addAll(Arrays.asList(ip2));
+        p3.getItens().addAll(Arrays.asList(ip4));
 
-        itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+        itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3,ip4));
     }
 
 }
