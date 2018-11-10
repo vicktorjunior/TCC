@@ -58,7 +58,7 @@ public class ProdutoServiceTest {
 
     @Test
     public void test_save() {
-        assertThat(produtoService.save(new Produto(null, "Nome", 10.0))).isNotNull();
+        assertThat(produtoService.save(new Produto(null, "Nome",10, 10.0))).isNotNull();
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.victorseger.svtech.services;
 import com.victorseger.svtech.domain.*;
 import com.victorseger.svtech.repositories.ItemPedidoRepository;
 import com.victorseger.svtech.repositories.PedidoRepository;
+import com.victorseger.svtech.repositories.ProdutoRepository;
 import com.victorseger.svtech.services.exceptions.DataIntegrityException;
 import com.victorseger.svtech.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class PedidoService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     @Autowired
     private ClienteService clienteService;
@@ -107,6 +111,7 @@ public class PedidoService {
         pk.setPedido(itemPedido.getPedido());
         pk.setProduto(itemPedido.getProduto());
         itemPedido.setId(pk);
+
         if (itemPedido.getDesconto() == null)
             itemPedido.setDesconto(0.0);
         itemPedido = itemPedidoRepository.save(itemPedido);
@@ -116,6 +121,8 @@ public class PedidoService {
         }
         pedido.setValorTotal(soma);
         pedido.getItens().add(itemPedido);
+        reduceQtd(itemPedido);
+        //produtoRepository.getOne(itemPedido.getProduto().getId())
         repo.save(pedido);
     }
 
@@ -144,6 +151,15 @@ public class PedidoService {
 
     public boolean existsItemPedido(Pedido pedido, Produto produto) {
         return itemPedidoRepository.findById_PedidoAndId_Produto(pedido, produto) != null;
+    }
+
+    public void reduceQtd(ItemPedido itemPedido) {
+        Produto produto = itemPedido.getProduto();
+        Integer currentQtd = itemPedido.getProduto().getQtd();
+        Integer minusQtd = itemPedido.getQuantidade();
+
+        produto.setQtd(currentQtd-minusQtd);
+
     }
 
 }

@@ -29,6 +29,7 @@
                             <thead class="text-center">
                             <tr>
                                 <th th:text="#{product.name}"></th>
+                                <th th:text="#{product.qtd}"></th>
                                 <th th:text="#{product.price}"></th>
                                 <th th:text="#{category}"></th>
                                 <th th:text="#{options}"></th>
@@ -37,6 +38,7 @@
                             <tfoot class="text-center">
                             <tr>
                                 <th th:text="#{product.name}"></th>
+                                <th th:text="#{product.qtd}"></th>
                                 <th th:text="#{product.price}"></th>
                                 <th th:text="#{category}"></th>
                                 <th th:text="#{options}"></th>
@@ -45,6 +47,7 @@
                             <tbody>
                             <tr th:each="product: ${products}">
                                 <td th:text="${product.nome}"></td>
+                                <td th:text="${product.qtd}"></td>
                                 <td th:text="${#numbers.formatCurrency(product.preco)}"></td>
                                 <td>
                                     <ul>

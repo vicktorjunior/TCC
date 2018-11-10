@@ -16,6 +16,7 @@ public class Produto implements Serializable {
     private Integer id;
     private String nome;
     private Double preco;
+    private Integer qtd;
 
     //no outro lado da relação, ele omitirá a lista de categorias para produtos
     @JsonIgnore
@@ -40,8 +41,9 @@ public class Produto implements Serializable {
     public Produto() {
     }
 
-    public Produto(Integer id, String nome, Double preco) {
+    public Produto(Integer id, String nome,Integer qtd, Double preco) {
         this.id = id;
+        this.qtd=qtd;
         this.nome = nome;
         this.preco = preco;
     }
@@ -95,6 +97,14 @@ public class Produto implements Serializable {
 
     public void setItens(Set<ItemPedido> itens) {
         this.itens = itens;
+    }
+
+    public Integer getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(Integer qtd) {
+        this.qtd = qtd;
     }
 
     @Override

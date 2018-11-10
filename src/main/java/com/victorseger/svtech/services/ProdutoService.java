@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +32,19 @@ public class ProdutoService {
         return repo.findAll();
     }
 
+    public List<Produto> findWithUnits() {
+        List<Produto> lista = repo.findAll();
+        List<Produto> listaWithUnits = new LinkedList<>();
+        for (Produto produto: lista) {
+            if(produto.getQtd() > 0) {
+                listaWithUnits.add(produto);
+            }
+        }
+        return listaWithUnits;
+    }
+
     public Produto save(Produto produto) {
-        if (produto == null || repo.existsByNomeIgnoreCase(produto.getNome())) {
+        if (produto == null) {
             return null;
         }
         return repo.save(produto);
@@ -51,5 +63,9 @@ public class ProdutoService {
         }
         return false;
     }
+
+//    public boolean haveUnits(Produto produto) {
+//
+//    }
 
 }

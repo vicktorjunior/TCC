@@ -24,7 +24,13 @@
                                 <div class="col-md-12">
                                     <input type="hidden" id="id" th:field="*{id}">
                                     <div class="form-row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-4">
+                                            <label for="product-name" th:text="#{order.qtd}"></label>
+                                            <input class="form-control" id="product-qtd" type="number"
+                                                   aria-describedby="nameHelp"
+                                                   placeholder="Qtd. de Produto" min="1" th:field="*{qtd}">
+                                        </div>
+                                        <div class="col-md-4">
                                             <label for="product-name" th:text="#{product.name}"></label>
                                             <input class="form-control" id="product-name" type="text"
                                                    aria-describedby="nameHelp"
