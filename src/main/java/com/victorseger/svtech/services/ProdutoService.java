@@ -29,11 +29,11 @@ public class ProdutoService {
     }
 
     public List<Produto> findAll() {
-        return repo.findAll();
+        return repo.findAllByOrderByNomeAsc();
     }
 
     public List<Produto> findWithUnits() {
-        List<Produto> lista = repo.findAll();
+        List<Produto> lista = repo.findAllByOrderByNomeAsc();
         List<Produto> listaWithUnits = new LinkedList<>();
         for (Produto produto: lista) {
             if(produto.getQtd() > 0) {
