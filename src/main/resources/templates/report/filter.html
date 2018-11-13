@@ -71,6 +71,10 @@
                                 </td>
                                 <td th:text="${order.valorTotal}"></td>
                             </tr>
+                            <tr>
+                               <!-- <td colspan="3" align="center"><b>Total</b></td>-->
+                                <!--<td th:text="${#aggregates.sum(order.valorTotal)}"></td>-->
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -96,7 +100,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tbody>
                             <tr th:each="product, row: ${products.keySet()}">
                                 <td th:text="${row.index + 1}"></td>
                                 <td th:text="${product.nome}"></td>
@@ -107,7 +110,6 @@
                                 </td>
                                 <td th:text="${products.get(product)}"></td>
                             </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>

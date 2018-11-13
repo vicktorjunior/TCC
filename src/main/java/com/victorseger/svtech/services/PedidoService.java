@@ -105,25 +105,34 @@ public class PedidoService {
         return null;
     }
 
-    public void insertItem(ItemPedido itemPedido) {
+    public boolean insertItem(ItemPedido itemPedido) {
         ItemPedidoPK pk = new ItemPedidoPK();
         Pedido pedido = repo.getOne(itemPedido.getPedido().getId());
+        Produto produto = produtoRepository.getOne(itemPedido.getProduto().getId());
         pk.setPedido(itemPedido.getPedido());
         pk.setProduto(itemPedido.getProduto());
         itemPedido.setId(pk);
-
+        itemPedido = itemPedidoRepository.save(itemPedido);
         if (itemPedido.getDesconto() == null)
             itemPedido.setDesconto(0.0);
-        itemPedido = itemPedidoRepository.save(itemPedido);
+
         double soma = 0;
         for (ItemPedido itemPedidos : pedido.getItens()) {
             soma += itemPedidos.getPreco();
         }
-        pedido.setValorTotal(soma);
-        pedido.getItens().add(itemPedido);
-        reduceQtd(itemPedido);
+        if (reduceQtd(itemPedido)) {
+            //pedido.setValorTotal(soma);
+            //pedido.getItens().add(itemPedido);
+            System.out.println("entrou if");
+            repo.save(pedido);
+            return true;
+        } else {
+            System.out.println("entrou else");
+            deleteItem(itemPedido);
+            return false;
+        }
         //produtoRepository.getOne(itemPedido.getProduto().getId())
-        repo.save(pedido);
+
     }
 
     public void updateItem(ItemPedido itemPedido) {
@@ -153,12 +162,27 @@ public class PedidoService {
         return itemPedidoRepository.findById_PedidoAndId_Produto(pedido, produto) != null;
     }
 
-    public void reduceQtd(ItemPedido itemPedido) {
+    public boolean reduceQtd(ItemPedido itemPedido) {
         Produto produto = itemPedido.getProduto();
         Integer currentQtd = itemPedido.getProduto().getQtd();
         Integer minusQtd = itemPedido.getQuantidade();
 
-        produto.setQtd(currentQtd-minusQtd);
+        System.out.println("resultado da subtr: ".concat(String.valueOf(currentQtd-minusQtd)));
+        if (currentQtd-minusQtd >= 0) {
+            produto.setQtd(currentQtd-minusQtd);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public void addQtd(Integer id) {
+        Pedido pedido = find(id);
+        for (ItemPedido item: pedido.getItens()) {
+            Produto produto = item.getProduto();
+            produto.setQtd(produto.getQtd()+item.getQuantidade());
+        }
 
     }
 

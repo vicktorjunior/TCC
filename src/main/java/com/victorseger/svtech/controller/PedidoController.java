@@ -32,6 +32,7 @@ public class PedidoController {
     private ProdutoService productService;
 
     private boolean error;
+    private boolean errorItem;
     private boolean saved;
 
     @GetMapping("/lista")
@@ -62,6 +63,7 @@ public class PedidoController {
 
     @GetMapping("/cancelar/{id}")
     public ModelAndView cancelOrder(@PathVariable int id, Model model) {
+        service.addQtd(id);
         service.delete(id);
         return new ModelAndView("redirect:/pedidos/lista/");
     }
@@ -81,7 +83,9 @@ public class PedidoController {
         pedido = service.insert(pedido);
         itemPedido.setPedido(pedido);
         model.addAttribute("error", error);
+        model.addAttribute("errorItem", errorItem);
         error = false;
+        errorItem = false;
         model.addAttribute("order", pedido);
         model.addAttribute("action", "new");
         model.addAttribute("items", new HashSet<>());
@@ -97,6 +101,8 @@ public class PedidoController {
         model.addAttribute("order", service.find(id));
         model.addAttribute("action", "new");
         model.addAttribute("error", error);
+        model.addAttribute("errorItem", errorItem);
+        errorItem = false;
         error = false;
         model.addAttribute("items", service.find(id).getItens());
         model.addAttribute("products", productService.findAll());
@@ -122,10 +128,17 @@ public class PedidoController {
 
     @PostMapping("/salvarItem")
     public ModelAndView saveItem(@ModelAttribute("newItem") ItemPedido itemPedido) {
+        Produto produto = productService.find(itemPedido.getProduto().getId());
         if (service.existsItemPedido(itemPedido.getPedido(), itemPedido.getProduto())) {
             service.updateItem(itemPedido);
         } else {
-            service.insertItem(itemPedido);
+            if(service.insertItem(itemPedido)) {
+                errorItem = false;
+            } else {
+                System.out.println("item pedido qtd produto: " + itemPedido.getQuantidade());
+                System.out.println("qtd produto estoque: " + produto.getQtd());
+                errorItem = true;
+            }
         }
         return new ModelAndView("redirect:/pedidos/itens/" + itemPedido.getPedido().getId());
     }

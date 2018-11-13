@@ -146,8 +146,25 @@
             });
         }
 
+        function errorItemAlert() {
+            swal({
+                title: "Erro!",
+                text: "Não foi possível adicionar este item. Vendendo mais unidades do que há em estoque!",
+                type: "error",
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ok",
+                allowOutsideClick: false
+            });
+        }
+
         if ([[${error}]] == true)
             errorAlert();
+
+        if ([[${errorItem}]] == true) {
+            errorItemAlert();
+        }
+
     </script>
 </th:block>
 </html>
