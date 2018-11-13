@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,13 +44,21 @@ public class RelatorioService {
         return repo.filterOrders(initDate, finalDate);
     }
 
+    public List<Pedido> totalOrders(LocalDate initDate, LocalDate finalDate) {
+        List<Pedido> pedidos = filterOrders(initDate,finalDate);
+        List<Double> totalPedidos = new LinkedList<>();
+        for (Pedido pedido: pedidos) {
+            totalPedidos.add(pedido.getValorTotal());
+        }
+        return pedidos;
+    }
+
     public double totalOrdersPeriod(LocalDate initDate, LocalDate finalDate) {
         List<Pedido> pedidos = filterOrders(initDate,finalDate);
         double totalOrders = 0;
         for (Pedido pedido: pedidos) {
             totalOrders+=pedido.getValorTotal();
         }
-        System.out.println("total das vendas do periodo: " + totalOrders);
         return totalOrders;
     }
 

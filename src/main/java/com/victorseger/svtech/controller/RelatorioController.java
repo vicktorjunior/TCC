@@ -1,6 +1,7 @@
 package com.victorseger.svtech.controller;
 
 import com.victorseger.svtech.domain.Filter;
+import com.victorseger.svtech.services.PedidoService;
 import com.victorseger.svtech.services.RelatorioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -51,6 +52,7 @@ public class RelatorioController {
         } else if ("Produto".equals(filter.getObject())){
             model.addAttribute("products", relatorioService.transformProductMatrix(relatorioService.filterProducts(filter.getInitialDate(), filter.getFinalDate())));
         } else if ("Total".equals(filter.getObject())) {
+            model.addAttribute("ordersTotal", relatorioService.totalOrders(filter.getInitialDate(), filter.getFinalDate()));
             model.addAttribute("total", relatorioService.totalOrdersPeriod(filter.getInitialDate(),filter.getFinalDate()));
         }
         return new ModelAndView("report/filter");
