@@ -122,6 +122,7 @@ public class PedidoController {
 
     @GetMapping("/itens/{id}/excluir/{idItem}")
     public ModelAndView deleteItem(@PathVariable int id, @PathVariable int idItem, Model model) {
+        //service.addQtdItem(id,idItem);
         service.deleteItem(service.findItemById(service.find(id), productService.find(idItem)));
         return new ModelAndView("redirect:/pedidos/itens/" + id);
     }

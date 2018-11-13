@@ -155,6 +155,9 @@ public class PedidoService {
     }
 
     public void deleteItem(ItemPedido itemPedido) {
+        Produto produto = itemPedido.getProduto();
+        produto.setQtd(produto.getQtd()+itemPedido.getQuantidade());
+
         itemPedidoRepository.delete(itemPedidoRepository.findById_PedidoAndId_Produto(itemPedido.getPedido(), itemPedido.getProduto()));
     }
 
