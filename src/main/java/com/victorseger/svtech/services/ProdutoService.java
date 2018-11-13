@@ -39,8 +39,14 @@ public class ProdutoService {
             if(produto.getQtd() > 0) {
                 listaWithUnits.add(produto);
             }
+
         }
-        return listaWithUnits;
+        if (listaWithUnits.size()>0) {
+            return listaWithUnits;
+        } else {
+            return null;
+        }
+
     }
 
     public Produto save(Produto produto) {
