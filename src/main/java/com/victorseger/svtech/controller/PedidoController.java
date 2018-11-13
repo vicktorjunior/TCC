@@ -136,8 +136,6 @@ public class PedidoController {
             if(service.insertItem(itemPedido)) {
                 errorItem = false;
             } else {
-                System.out.println("item pedido qtd produto: " + itemPedido.getQuantidade());
-                System.out.println("qtd produto estoque: " + produto.getQtd());
                 errorItem = true;
             }
         }

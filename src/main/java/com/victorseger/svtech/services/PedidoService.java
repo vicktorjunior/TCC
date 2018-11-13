@@ -109,26 +109,30 @@ public class PedidoService {
         ItemPedidoPK pk = new ItemPedidoPK();
         Pedido pedido = repo.getOne(itemPedido.getPedido().getId());
         Produto produto = produtoRepository.getOne(itemPedido.getProduto().getId());
-        pk.setPedido(itemPedido.getPedido());
-        pk.setProduto(itemPedido.getProduto());
-        itemPedido.setId(pk);
-        itemPedido = itemPedidoRepository.save(itemPedido);
-        if (itemPedido.getDesconto() == null)
-            itemPedido.setDesconto(0.0);
+        System.out.println(produto.getQtd());
+        System.out.println(itemPedido.getQuantidade());
+        if (itemPedido.getProduto().getQtd() > itemPedido.getQuantidade()) {
+            Produto prod = itemPedido.getProduto();
+            prod.setQtd(itemPedido.getProduto().getQtd()- itemPedido.getQuantidade());
+            pk.setPedido(itemPedido.getPedido());
+            pk.setProduto(itemPedido.getProduto());
+            itemPedido.setId(pk);
+            itemPedido = itemPedidoRepository.save(itemPedido);
+            if (itemPedido.getDesconto() == null)
+                itemPedido.setDesconto(0.0);
 
-        double soma = 0;
-        for (ItemPedido itemPedidos : pedido.getItens()) {
-            soma += itemPedidos.getPreco();
-        }
-        if (reduceQtd(itemPedido)) {
-            //pedido.setValorTotal(soma);
-            //pedido.getItens().add(itemPedido);
-            System.out.println("entrou if");
+            double soma = 0;
+            for (ItemPedido itemPedidos : pedido.getItens()) {
+                soma += itemPedidos.getPreco();
+            }
+
+            pedido.setValorTotal(soma);
+            pedido.getItens().add(itemPedido);
             repo.save(pedido);
             return true;
         } else {
             System.out.println("entrou else");
-            deleteItem(itemPedido);
+            //deleteItem(itemPedido);
             return false;
         }
         //produtoRepository.getOne(itemPedido.getProduto().getId())
@@ -156,7 +160,7 @@ public class PedidoService {
 
     public void deleteItem(ItemPedido itemPedido) {
         Produto produto = itemPedido.getProduto();
-        produto.setQtd(produto.getQtd()+itemPedido.getQuantidade());
+        produto.setQtd(produto.getQtd() + itemPedido.getQuantidade());
 
         itemPedidoRepository.delete(itemPedidoRepository.findById_PedidoAndId_Produto(itemPedido.getPedido(), itemPedido.getProduto()));
     }
@@ -170,9 +174,8 @@ public class PedidoService {
         Integer currentQtd = itemPedido.getProduto().getQtd();
         Integer minusQtd = itemPedido.getQuantidade();
 
-        System.out.println("resultado da subtr: ".concat(String.valueOf(currentQtd-minusQtd)));
-        if (currentQtd-minusQtd >= 0) {
-            produto.setQtd(currentQtd-minusQtd);
+        if (currentQtd - minusQtd >= 0) {
+            produto.setQtd(currentQtd - minusQtd);
             return true;
         } else {
             return false;
@@ -182,9 +185,9 @@ public class PedidoService {
 
     public void addQtd(Integer id) {
         Pedido pedido = find(id);
-        for (ItemPedido item: pedido.getItens()) {
+        for (ItemPedido item : pedido.getItens()) {
             Produto produto = item.getProduto();
-            produto.setQtd(produto.getQtd()+item.getQuantidade());
+            produto.setQtd(produto.getQtd() + item.getQuantidade());
         }
 
     }
