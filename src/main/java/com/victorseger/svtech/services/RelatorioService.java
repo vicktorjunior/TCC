@@ -28,6 +28,9 @@ public class RelatorioService {
     @Autowired
     private ProdutoService produtoService;
 
+    @Autowired
+    private PedidoService pedidoService;
+
     public Integer[][] topSellingProducts() {
         return itemPedidoRepository.topSellingProducts();
     }
@@ -38,6 +41,16 @@ public class RelatorioService {
 
     public List<Pedido> filterOrders(LocalDate initDate, LocalDate finalDate) {
         return repo.filterOrders(initDate, finalDate);
+    }
+
+    public double totalOrdersPeriod(LocalDate initDate, LocalDate finalDate) {
+        List<Pedido> pedidos = filterOrders(initDate,finalDate);
+        double totalOrders = 0;
+        for (Pedido pedido: pedidos) {
+            totalOrders+=pedido.getValorTotal();
+        }
+        System.out.println("total das vendas do periodo: " + totalOrders);
+        return totalOrders;
     }
 
     public Integer[][] filterProducts(LocalDate initialDate, LocalDate finalDate) {

@@ -31,7 +31,7 @@ public class RelatorioController {
 
     @GetMapping("/filtros")
     public ModelAndView formFilterReports(Model model) {
-        String[] objects = {"Produto", "Pedido", "Categoria"};
+        String[] objects = {"Produto", "Pedido", "Categoria", "Total"};
         model.addAttribute("objects", objects);
         model.addAttribute("filter", filter);
         return new ModelAndView("report/filter");
@@ -41,7 +41,7 @@ public class RelatorioController {
     public ModelAndView filterReports(Filter filter, Model model){
         if(filter == null)
             filter = new Filter();
-        String[] objects = {"Produto", "Pedido", "Categoria"};
+        String[] objects = {"Produto", "Pedido", "Categoria", "Total"};
         model.addAttribute("objects", objects);
         model.addAttribute("filter", filter);
         if ("Pedido".equals(filter.getObject())){
@@ -50,6 +50,8 @@ public class RelatorioController {
             model.addAttribute("categories", relatorioService.transformCategoryMatrix(relatorioService.filterCategories(filter.getInitialDate(), filter.getFinalDate())));
         } else if ("Produto".equals(filter.getObject())){
             model.addAttribute("products", relatorioService.transformProductMatrix(relatorioService.filterProducts(filter.getInitialDate(), filter.getFinalDate())));
+        } else if ("Total".equals(filter.getObject())) {
+            model.addAttribute("total", relatorioService.totalOrdersPeriod(filter.getInitialDate(),filter.getFinalDate()));
         }
         return new ModelAndView("report/filter");
     }
