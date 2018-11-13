@@ -147,6 +147,12 @@ public class PedidoService {
 
     private void updateDataItem(ItemPedido newItem, ItemPedido itemPedido) {
         ItemPedidoPK pk = new ItemPedidoPK();
+        Produto prod = itemPedido.getProduto();
+        if (newItem.getQuantidade() > itemPedido.getQuantidade()) {//reduzindo qtd no pedido
+            prod.setQtd(prod.getQtd()+(newItem.getQuantidade()-itemPedido.getQuantidade()));
+        } else { // aumentando qtd no pedido
+            prod.setQtd(prod.getQtd()+(newItem.getQuantidade()-itemPedido.getQuantidade()));
+        }
         pk.setPedido(itemPedido.getPedido());
         pk.setProduto(itemPedido.getProduto());
         newItem.setId(pk);

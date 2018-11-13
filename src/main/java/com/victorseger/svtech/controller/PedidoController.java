@@ -129,7 +129,6 @@ public class PedidoController {
 
     @PostMapping("/salvarItem")
     public ModelAndView saveItem(@ModelAttribute("newItem") ItemPedido itemPedido) {
-        Produto produto = productService.find(itemPedido.getProduto().getId());
         if (service.existsItemPedido(itemPedido.getPedido(), itemPedido.getProduto())) {
             service.updateItem(itemPedido);
         } else {
