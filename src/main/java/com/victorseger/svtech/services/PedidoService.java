@@ -111,7 +111,7 @@ public class PedidoService {
         Produto produto = produtoRepository.getOne(itemPedido.getProduto().getId());
         System.out.println(produto.getQtd());
         System.out.println(itemPedido.getQuantidade());
-        if (itemPedido.getProduto().getQtd() > itemPedido.getQuantidade()) {
+        if (itemPedido.getProduto().getQtd() >= itemPedido.getQuantidade()) {
             Produto prod = itemPedido.getProduto();
             prod.setQtd(itemPedido.getProduto().getQtd()- itemPedido.getQuantidade());
             pk.setPedido(itemPedido.getPedido());
