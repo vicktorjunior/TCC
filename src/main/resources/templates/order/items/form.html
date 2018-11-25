@@ -84,7 +84,7 @@
                                         <div class="col-md-3">
                                             <label for="discount" th:text="#{order.descont}"></label>
                                             <input class="form-control" placeholder="R$ 10.00"
-                                                   id="discount" type="number" min="0.0" th:field="*{desconto}">
+                                                   id="discount" type="number" step="any" min="0.0" th:field="*{desconto}">
                                         </div>
                                         <div class="col-md-2" style="display: none;">
                                             <label for="sprice" th:text="#{item.price}"></label>
