@@ -89,7 +89,7 @@ public class PedidoController {
         model.addAttribute("order", pedido);
         model.addAttribute("action", "new");
         model.addAttribute("items", new HashSet<>());
-        model.addAttribute("products", productService.findWithUnits());
+        model.addAttribute("products", productService.findAll());
         model.addAttribute("newItem", itemPedido);
         return new ModelAndView("order/items/form");
     }
